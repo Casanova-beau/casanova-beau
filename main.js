@@ -3,9 +3,25 @@ document.addEventListener("DOMContentLoaded", function () {
   const menuToggle = document.getElementById("menu-toggle");
   const navbar = document.getElementById("navbar");
   if (menuToggle && navbar) {
+    const setMenuState = (isOpen) => {
+      navbar.classList.toggle("active", isOpen);
+      menuToggle.classList.toggle("active", isOpen);
+      menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    };
+
     menuToggle.addEventListener("click", () => {
-      navbar.classList.toggle("active");
-      menuToggle.classList.toggle("active");
+      const isOpen = navbar.classList.contains("active");
+      setMenuState(!isOpen);
+    });
+
+    navbar.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setMenuState(false));
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900) {
+        setMenuState(false);
+      }
     });
   }
 
